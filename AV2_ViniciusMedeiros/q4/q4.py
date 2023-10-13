@@ -11,8 +11,8 @@ cursor = mydb.cursor()
 execSQLcmd = lambda cmd: cursor.execute(cmd)
 printLista = lambda l : [print(x) for x in l]
 
-createTable = lambda table, attrs : execSQLcmd("CREATE TABLE " + table + " (" + attrs + ");\n")
-createDB = lambda dbname : execSQLcmd("CREATE DATABASE " + dbname + ";\n")
+createTable = lambda table, attrs : execSQLcmd("CREATE TABLE IF NOT EXISTS " + table + " (" + attrs + ");\n")
+createDB = lambda dbname : execSQLcmd("CREATE DATABASE IF NOT EXISTS " + dbname + ";\n")
 dropDB = lambda dbname : execSQLcmd("DROP DATABASE " + dbname + ";\n")
 dropTable = lambda dbname : execSQLcmd("DROP TABLE " + dbname + ";\n")
 useDB = lambda dbname : execSQLcmd("USE " + dbname + ";\n")
@@ -21,17 +21,11 @@ insertINTO = lambda table, attrs, values : execSQLcmd("INSERT INTO " + table + "
 deleteFrom = lambda table, columnName, value : execSQLcmd("DELETE FROM " + table + " WHERE " + columnName + " = " + value + " OR " + columnName + " IS NULL;\n")
 updateFrom = lambda table, columnName, newValue, id : execSQLcmd("UPDATE " + table + "\n" + "SET " + columnName + " = " + newValue + "\n" + "WHERE id = " + str(id))
 
-"""
--> DESCOMENTAR O COMANDO ABAIXO APENAS QUANDO GERAR ALGUM ERRO INFORMANDO
--> QUE O UM BANCO DE DADOS COM ESSE NOME JA FOI CRIADO
-"""
-#dropDB("mydb")
 createDB("mydb")
 useDB("mydb")
 
-"""
--> LEMBRAR QUE O FORMATO DE DATA QUE PRECISA SER FORNECIDO E NO FORMATO "AAAA-MM-DD"
-"""
+
+# -> LEMBRAR QUE O FORMATO DE DATA QUE PRECISA SER FORNECIDO E NO FORMATO "AAAA-MM-DD"
 createTable("usuarios", "id INT , name VARCHAR (255) , console VARCHAR (45)")
 createTable("jogos", "id INT , name VARCHAR (255), data_lancamento DATE")
 

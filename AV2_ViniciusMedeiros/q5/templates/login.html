@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+    <body>
+        <div class="wrapper">
+            <form action="/form_login" method="post">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        required
+                    />
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        required
+                    />
+                    <i class='bx bxs-lock-alt' ></i>
+                </div>
+
+                <div class="remember-forgot">
+                    <label>
+                        <input type="checkbox"> Remember me </label>
+                    </label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn">
+                    Login
+                </button>
+            </form>
+            <form action="/register">
+                <div class="register-link">
+                        <p>Don't have an account? <a href="#"><button type="submit">Register</button></a></p>
+                </div>
+            </form>
+            <h5 id="info" style="text-align: center;">{{info}}</h5>
+        </div>
+        <script>
+            var infoElement = document.getElementById('info');
+            if (infoElement.innerHTML == "User registered with success") {
+                infoElement.style.color = '#22bb33';
+                setTimeout(function () {
+                    infoElement.style.display = 'none';
+                }, 3500);
+            } else if (infoElement.innerHTML != "") {
+                infoElement.style.color = '#bb2124';
+                setTimeout(function () {
+                    infoElement.style.display = 'none';
+                }, 3500);
+            }
+        </script>
+    </body>
+</html>
