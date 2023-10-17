@@ -1,37 +1,21 @@
 from flask import Flask,request,render_template
 
 app = Flask(__name__, template_folder="templates")
-database={'vinicius':'1234','ph':'123'}
+database={'vinicius':'1234','pedro':'@PH321'}
 
-@app.route('/')
-def hello_world():
-    return render_template("login.html")
+login = lambda : render_template("login.html")
 
-@app.route('/form_login', methods=['POST','GET'])
-def login():
-    name1=request.form['username']
-    pwd=request.form['password']
-    if name1 not in database:
-        return render_template('login.html',info='Invalid User')
-    else:
-        if database[name1]!=pwd:
-            return render_template('login.html',info='Invalid Password')
-        else:
-            return render_template('home.html',name=name1)
-        
-@app.route('/register')
-def register():
-    return render_template('register.html')
+userInDB = lambda : request.form['username'] in database
+canLogin = lambda : render_template('login.html',info='Invalid Password') if database[request.form['username']] != request.form['password'] else render_template('home.html',name=request.form['username'])
+loginAction = lambda : canLogin() if userInDB() else render_template('login.html',info='Invalid User')
 
-@app.route('/form_register', methods=['POST','GET'])
-def registerNewUser():
-    usuario=request.form['username']
-    senha=request.form['password']
-    if usuario not in database:
-        database[usuario] = senha
-        return render_template('login.html',info='User registered with success')
-    else:
-        return render_template('register.html',info='User already exists')
-        
-if __name__ == '__main__':
-    app.run()
+goToRegister = lambda : render_template('register.html')
+
+addUserInDB = lambda : render_template('login.html',info='User registered with success') if database.update({request.form['username']: request.form['password']}) == None else "Algo deu errado..."
+registerUser = lambda : addUserInDB() if request.form['username'] not in database else render_template('register.html',info='User already exists')
+
+app.add_url_rule('/', 'login', login)
+app.add_url_rule('/form_login', 'form-login', loginAction, methods=['GET', 'POST'])
+app.add_url_rule('/register', 'register', goToRegister)
+app.add_url_rule('/form_register', 'form-register', registerUser, methods=['GET', 'POST'])
+app.run(host='0.0.0.0', port=8080)
